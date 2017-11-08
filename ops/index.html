@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>运维平台</title>
+    <script src="js/jquery.min.js"></script>
+    <style type="text/css">
+        /*common style begin*/
+        *{margin: 0;padding: 0;}
+        html,body{width: 100%;height: 100%;}
+        .dpb{display: block;}
+        .fl{float: left;}
+        .fr{float: right;}
+        .clear:after{display: block;height: 0;visibility: hidden;clear: both;}
+        /*common style end*/
+        /*index style begin*/
+        .contain{width: 100%;height: 100%;position:relative;z-index:1;overflow: hidden; }
+        .contain .contain_bg{width: 100%;height: 100%;position: absolute;z-index: 1;top:0;left: 0;}
+        .contain .contain_bg_item{width: 100%;height: 100%;position: absolute;z-index: 2;top: 0;left: 0;opacity: 0;
+            -webkit-transition: all 0.5s linear;-moz-transition: all 0.5s linear;-o-transition: all 0.5s linear;transition: all 0.5s linear;}
+        .bg_default{opacity: 1;
+            background: -webkit-linear-gradient(to bottom,rgba(245,245,250,1),rgba(230,233,237,1));
+            background: -moz-linear-gradient(to bottom,rgba(245,245,250,1),rgba(230,233,237,1));
+            background: -o-linear-gradient(to bottom,rgba(245,245,250,1),rgba(230,233,237,1));
+            background: linear-gradient(to bottom,rgba(245,245,250,1),rgba(230,233,237,1));
+        }
+        .bg_BMS{background: -webkit-linear-gradient(to bottom,rgba(237,85,101,1),rgba(218,68,83,1));
+            background: -moz-linear-gradient(to bottom,rgba(237,85,101,1),rgba(218,68,83,1));
+            background: -o-linear-gradient(to bottom,rgba(237,85,101,1),rgba(218,68,83,1));
+            background: linear-gradient(to bottom,rgba(237,85,101,1),rgba(218,68,83,1));}
+        .bg_CSS{background: -webkit-linear-gradient(to bottom,rgba(252,110,81,1),rgba(233,87,63,1));
+            background: -moz-linear-gradient(to bottom,rgba(252,110,81,1),rgba(233,87,63,1));
+            background: -o-linear-gradient(to bottom,rgba(252,110,81,1),rgba(233,87,63,1));
+            background: linear-gradient(to bottom,rgba(252,110,81,1),rgba(233,87,63,1));}
+        .bg_SASS{background: -webkit-linear-gradient(to bottom,rgba(255,205,84,1),rgba(246,187,66,1));
+            background: -moz-linear-gradient(to bottom,rgba(255,205,84,1),rgba(246,187,66,1));
+            background: -o-linear-gradient(to bottom,rgba(255,205,84,1),rgba(246,187,66,1));
+            background: linear-gradient(to bottom,rgba(255,205,84,1),rgba(246,187,66,1));}
+        .bg_PayCloud{background: -webkit-linear-gradient(to bottom,rgba(160,212,104,1),rgba(160,212,104,1));
+            background: -moz-linear-gradient(to bottom,rgba(160,212,104,1),rgba(160,212,104,1));
+            background: -o-linear-gradient(to bottom,rgba(160,212,104,1),rgba(160,212,104,1));
+            background: linear-gradient(to bottom,rgba(160,212,104,1),rgba(160,212,104,1));}
+        .bg_ParkManage{background: -webkit-linear-gradient(to bottom,rgba(72,207,173,1),rgba(55,188,155,1));
+            background: -moz-linear-gradient(to bottom,rgba(72,207,173,1),rgba(55,188,155,1));
+            background: -o-linear-gradient(to bottom,rgba(72,207,173,1),rgba(55,188,155,1));
+            background: linear-gradient(to bottom,rgba(72,207,173,1),rgba(55,188,155,1));}
+        .bg_BuildingAuto{background: -webkit-linear-gradient(to bottom,rgba(59,175,218,1),rgba(79,193,233,1));
+            background: -moz-linear-gradient(to bottom,rgba(59,175,218,1),rgba(79,193,233,1));
+            background: -o-linear-gradient(to bottom,rgba(59,175,218,1),rgba(79,193,233,1));
+            background: linear-gradient(to bottom,rgba(59,175,218,1),rgba(79,193,233,1));}
+        .contain header,
+        .contain nav{width: 47.4479167%;margin: 0 auto;}
+        .contain header{padding-top:3.703704%;position:relative;z-index:2; }
+        .contain .einwin_icon{height: 48px;position:relative;z-index:2;}
+        .contain .einwin_icon img{width: auto;height: 100%;
+            -webkit-transition: opacity 0.2s linear;-moz-transition: opacity 0.2s linear;-o-transition: opacity 0.2s linear;transition: opacity 0.2s linear;}
+        .contain .einwin_icon img:nth-of-type(1){position: relative;z-index:2;}
+        .contain .einwin_icon img:nth-of-type(2){opacity: 0;position: absolute;top:0;left: 0;z-index: 3;}
+        .contain .gotoNewPageBtn{height: 48px;line-height: 48px;font-family: "微软雅黑";color: #6b757c;cursor: pointer;}
+        .contain .gotoNewPageBtn span:nth-of-type(1){font-size: 14px;margin-right:10px;
+            -webkit-transition: color 0.2s linear;-moz-transition: color 0.2s linear;-o-transition: color 0.2s linear;transition: color 0.2s linear;}
+        .contain .gotoNewPageBtn span:nth-of-type(2){width: 48px;height: 30px;margin-top:9px;position:relative;z-index:2;background-color:rgba(0,0,0,0.1);border-radius: 24px;
+            -webkit-transition: background-color 1s linear;-moz-transition: background-color 1s linear;-o-transition: background-color 1s linear;transition: background-color 1s linear;}
+        .contain .gotoNewPageBtn span:nth-of-type(2)>i{width: 26px;height: 26px;font-style: normal;background-color:rgba(255,255,255,1);position: absolute;top:2px;left: 2px;border-radius: 50%;
+            -webkit-transition: all 0.3s linear;-moz-transition: all 0.3s linear;-o-transition: all 0.3s linear;transition: all 0.3s linear;}
+        .contain nav{position: absolute;z-index: 3;top:50%;left: 50%;box-shadow: 0 0 20px 4px rgba(0,0,0,0.05);
+            -webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);transform:translate(-50%,-50%); }
+        .contain nav a{width:33.3333333%;background-color: #ffffff;position: relative;z-index: 3;}
+        .contain nav a img{width: 100%;height: auto;}
+        .contain nav a img:nth-of-type(1){opacity: 0;position: relative;z-index: 3;}
+        .contain nav a img:nth-of-type(2){position: absolute;top:50%;left:50%;z-index: 4;border-right: 1px solid #e7e7e7;box-sizing: border-box;
+            -webkit-transition: width 0.2s linear,height 0.2s linear;-moz-transition: width 0.2s linear,height 0.2s linear;-o-transition: width 0.2s linear,height 0.2s linear;transition: width 0.2s linear,height 0.2s linear;
+            -webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);transform:translate(-50%,-50%);}
+        .contain nav a:hover{z-index: 4;}
+        .contain nav a:hover img:nth-of-type(2){width:103.30033%;border-width:0;box-shadow: 0 0 20px 4px rgba(0,0,0,0.05);}
+        .contain .BMS_icon,
+        .contain .CSS_icon,
+        .contain .SASS_icon{border-bottom: 1px solid #e7e7e7;}
+        /*index style end*/
+        /*media style begin*/
+        @media screen and (max-width: 1440px){
+            .contain nav{-webkit-transform:translate(-50%,-40%);-moz-transform:translate(-50%,-40%);-ms-transform:translate(-50%,-40%);-o-transform:translate(-50%,-40%);transform:translate(-50%,-40%); }
+        }
+        /*media style end*/
+    </style>
+</head>
+<body>
+    <div class="contain">
+        <div class="contain_bg" >
+            <div class="contain_bg_item bg_default"></div>
+            <div class="contain_bg_item bg_BMS"></div>
+            <div class="contain_bg_item bg_CSS"></div>
+            <div class="contain_bg_item bg_SASS"></div>
+            <div class="contain_bg_item bg_PayCloud"></div>
+            <div class="contain_bg_item bg_ParkManage"></div>
+            <div class="contain_bg_item bg_BuildingAuto"></div>
+        </div>
+        <header class="clear">
+            <h1 class="einwin_icon fl">
+            </h1>
+            <p class="gotoNewPageBtn fr clear" onclick="setLinkTarget(this)" data-flag="false">
+                <span class="fl">是否跳转本页</span>
+                <span class="fl"><i></i></span>
+            </p>
+        </header>
+        <nav class="containNav clear">
+            <a href="https://ansible.aetnachina.com.cn/" target="_self" class="BMS_icon fl" onmousemove="changeBg(0)" onmouseout="removeNewBg()">
+                <img src="images/BMS_icon.png" class="dpb">
+                <img src="images/BMS_icon.png" class="dpb">
+            </a>
+            <a href="http://syslog.aetnachina.com.cn/" target="_self" class="CSS_icon fl" onmousemove="changeBg(1)" onmouseout="removeNewBg()">
+                <img src="images/CSS_icon.png" class="dpb">
+                <img src="images/CSS_icon.png" class="dpb">
+            </a>
+            <a href="http://monitor.aetnachina.com.cn/" target="_self" class="SASS_icon fl" onmousemove="changeBg(2)" onmouseout="removeNewBg()">
+                <img src="images/SASS_icon.png" class="dpb">
+                <img src="images/SASS_icon.png" class="dpb">
+            </a>
+            <a href="https://mail.aetnachina.com.cn/" target="_self" class="PayCloud_icon fl" onmousemove="changeBg(3)" onmouseout="removeNewBg()">
+                <img src="images/PayCloud_icon.png" class="dpb">
+                <img src="images/PayCloud_icon.png" class="dpb">
+            </a>
+            <a href="https://vdi.aetnachina.com.cn" target="_self" class="ParkManage_icon fl" onmousemove="changeBg(4)" onmouseout="removeNewBg()">
+                <img src="images/ParkManage_icon.png" class="dpb">
+                <img src="images/ParkManage_icon.png" class="dpb">
+            </a>
+            <a href="" target="_self" class="BuildingAuto_icon fl" onmousemove="changeBg(5)" onmouseout="removeNewBg()">
+                <img src="images/BuildingAuto_icon.png" class="dpb">
+                <img src="images/BuildingAuto_icon.png" class="dpb">
+            </a>
+        </nav>
+    </div>
+</body>
+<script>
+    /*修改页面背景颜色*/
+    var arrBg=['bg_BMS','bg_CSS','bg_SASS','bg_PayCloud','bg_ParkManage','bg_BuildingAuto'];
+    function changeBg(index) {
+        $('.contain_bg .contain_bg_item').not('.'+arrBg[index]).css({'opacity':0});
+        $('.'+arrBg[index]).css({'opacity':1});
+        $('.einwin_icon img:eq(0)').css({'opacity':0});
+        $('.einwin_icon img:eq(1)').css({'opacity':1});
+        $('.gotoNewPageBtn').css({'color':'#ffffff'});
+    }
+    function removeNewBg() {
+        $('.contain_bg .contain_bg_item').not('.bg_default').css({'opacity':0});
+        $('.bg_default').css({'opacity':1});
+        $('.einwin_icon img:eq(0)').css({'opacity':1});
+        $('.einwin_icon img:eq(1)').css({'opacity':0});
+        $('.gotoNewPageBtn').css({'color':'#6b757c'});
+    }
+    /*修改页面背景颜色*/
+    /*设置是否跳转本页*/
+    function  setLinkTarget(obj) {
+        var strDataFlag=$(obj).attr('data-flag');
+
+        if(strDataFlag=='false'){
+            $('.containNav').find('a').attr('target','_blank');
+            $(obj).find('span:eq(1)').css({'backgroundColor':'rgba(0,0,0,0.35)'});
+            $(obj).find('span:eq(1)>i').css({'left':'20px'});
+            $(obj).attr('data-flag','true');
+        }else{
+            $('.containNav').find('a').attr('target','_self');
+            $(obj).find('span:eq(1)').css({'backgroundColor':'rgba(0,0,0,0.1)'});
+            $(obj).find('span:eq(1) i').css({'left':'2px'});
+            $(obj).attr('data-flag','false');
+        }
+    }
+    /*设置是否跳转本页*/
+</script>
+</html>
